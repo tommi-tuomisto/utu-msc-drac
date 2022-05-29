@@ -1,0 +1,61 @@
+- name: Install EPEL package library
+  command: /usr/bin/amazon-linux-extras install epel -y
+
+- name: Copy Postgres repository configuration
+  copy:
+    src: postgres.repo
+    dest: /etc/yum.repos.d/postgres.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install the latest version of PostgreSQL13
+  yum:
+    name: postgresql13
+    state: latest
+
+- name: Install the latest version of PostgreSQL13 server
+  yum:
+    name: postgresql13-server
+    state: latest
+
+- name: Init database
+  shell: /usr/pgsql-13/bin/postgresql-13-setup initdb
+
+- name: Copy Postgres configuration
+  copy:
+    src: postgresql.conf
+    dest: /var/lib/pgsql/13/data/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: 0600
+
+- name: Copy pg_hba configuration
+  copy:
+    src: pg_hba.conf
+    dest: /var/lib/pgsql/13/data/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: 0600
+
+- name: Start and enable service
+  systemd:
+    name: postgresql-13
+    state: started
+    enabled: yes
+
+- name: Create database
+  become: yes
+  become_user: postgres
+  command: psql -U postgres -c "create database lportal encoding 'utf8';"
+
+- name: Create database user and password
+  become: yes
+  become_user: postgres
+  command: psql -U postgres -c "create user dbuser with encrypted password 'testpassword123';"
+
+- name: Grant privileges
+  become: yes
+  become_user: postgres
+  command: psql -U postgres -c "grant all privileges on database lportal to dbuser;"
+

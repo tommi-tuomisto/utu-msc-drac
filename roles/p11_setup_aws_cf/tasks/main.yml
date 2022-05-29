@@ -1,0 +1,53 @@
+- name: Run Terraform apply
+  community.general.terraform:
+    project_path: 'terraform/'
+    state: present
+    force_init: true
+    workspace: '{{ target }}'
+    variables_files: 'tfvars/{{ target }}.tfvars'
+  register: tfout
+
+- name: Print Terraform outputs
+  debug:
+    msg: "{{ tfout.outputs }}"
+
+- name: Add web server host to inventory
+  add_host:
+    name: '{{ tfout.outputs.web_ip.value }}'
+    groups:
+      - web
+      - ec2
+
+- name: Add application server host to inventory
+  add_host:
+    name: '{{ tfout.outputs.app_ip.value }}'
+    groups:
+      - app
+      - ec2
+
+- name: Add database server host to inventory
+  add_host:
+    name: '{{ tfout.outputs.db_ip.value }}'
+    groups:
+      - db
+      - ec2
+
+- name: Add search engine server host to inventory
+  add_host:
+    name: '{{ tfout.outputs.se_ip.value }}'
+    groups:
+      - search
+      - ec2
+
+- name: "Set domain variable for later use"
+  set_fact:
+    fqdn: '{{ tfout.outputs.fqdn.value }}'
+
+- name: Set fact for current amount of hosts in inventory
+  set_fact:
+    num_hosts: "{{ ansible_play_hosts | length }}"
+
+- name: Validate number of nodes
+  fail: msg="The number of nodes must be exactly 5!"
+  when: num_hosts | int != 5
+

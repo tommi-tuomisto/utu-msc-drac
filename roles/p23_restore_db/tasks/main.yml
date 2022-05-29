@@ -1,0 +1,11 @@
+- name: Copy database dump file from backup
+  copy:
+    src: backups/db/dump.sql
+    dest: /tmp/dump.sql
+    owner: postgres
+    group: postgres
+
+- name: Restore from dump file
+  become: yes
+  become_user: postgres
+  command: psql -U postgres -f /tmp/dump.sql postgres

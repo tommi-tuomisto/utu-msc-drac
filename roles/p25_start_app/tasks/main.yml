@@ -1,0 +1,4 @@
+- name: Start Liferay
+  systemd:
+    state: started
+    name: liferay-portal

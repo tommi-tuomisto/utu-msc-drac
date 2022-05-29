@@ -1,0 +1,35 @@
+- name: Set domain name fact
+  set_fact:
+    fqdn: "{{ hostvars['localhost'].fqdn }}"
+
+- name: Install NGINX 
+  command: /usr/bin/amazon-linux-extras install nginx1 -y
+
+- name: Create NGINX config file from template
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy TLS certificate chain
+  copy:
+    src: any.liferayapp.xyz-fullchain.pem
+    dest: /etc/pki/tls/certs/any.liferayapp.xyz-fullchain.pem
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy TLS certificate private key
+  copy:
+    src: any.liferayapp.xyz-privkey.pem
+    dest: /etc/pki/tls/private/any.liferayapp.xyz-privkey.pem
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Restart NGINX
+  systemd:
+    state: restarted
+    name: nginx

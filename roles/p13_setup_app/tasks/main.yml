@@ -1,0 +1,45 @@
+- name: Install OpenJDK 
+  command: /usr/bin/amazon-linux-extras install java-openjdk11 -y
+  
+- name: Create directory for Liferay
+  file:
+    path: /opt/liferay
+    state: directory
+    mode: '0755'
+
+- name: Copy Liferay installation file
+  copy:
+    src: software/liferay-ce-portal-tomcat-7.4.2-ga3-20210728053338694.tar.gz
+    dest: /opt/liferay/liferay-ce-portal-tomcat-7.4.2-ga3-20210728053338694.tar.gz
+    force: no
+
+- name: Unarchive the installation file
+  unarchive:
+    src: /opt/liferay/liferay-ce-portal-tomcat-7.4.2-ga3-20210728053338694.tar.gz
+    dest: /opt/liferay/
+    remote_src: yes
+
+- name: Create Liferay local user
+  user:
+    name: liferay
+
+- name: Change ownership of Liferay installation directory
+  file:
+    path: /opt/liferay
+    owner: liferay
+    recurse: yes
+
+- name: Copy Liferay service configuration
+  copy:
+    src: liferay-portal.service
+    dest: /usr/lib/systemd/system/liferay-portal.service
+
+- name: Daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: Start Liferay
+  systemd:
+    name: liferay-portal
+    state: started
+    enabled: yes

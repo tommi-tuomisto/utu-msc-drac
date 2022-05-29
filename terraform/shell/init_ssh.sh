@@ -1,0 +1,6 @@
+#!/bin/bash
+SSH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLkIXH39c5/kzN4gj4PDzIVsBDxOWw9+/iu3lzHcs1S2UqqPQGKU0NBXuvsEGUF44yogGd5i8Yd01inC9GO/4q71ZdAwL/fgE+lXxoKEKHt8w4yT+eXlrf6LdQ0Ked0yYdUOlLhWxSv1oPR1V6f6OA2i6GmRGpwJg7KF6Inj+Qcenhj77vdwAafzjaiebmI96FZUPl/dhYUZ9HIqejjNUYMYd7gsLndSXdvjXVJpzfPSuEDh2cZgJrvhLKiH6UQ87ZwueZ3XVHSLTz2lEZXvTIka2vZ9Yq3IdmcLbyc+nf3WUEuooTZJcDMlNNYMd+jPGnviL9Hf6vDtLnOWoLOv0qkdmXLa28KXpP3Dskx0ikPwPSGc5JsDly9b4HPeQAYUulBjvxSKkxKiRJUwMsuDg/7V5nef+cBTYn6a3DlK5eXDlNk9T6mc8ZbvJhwXEbjxdW9o7Ywu8WvaOH4sbpa8OSuBEWMt5TXTTPL0xb67uTsoV6tBPVFWUQfvqr+q2Y1sk="
+echo $SSH_KEY >> /home/ec2-user/.ssh/authorized_keys
+chown -R ec2-user:ec2-user /home/ec2-user/.ssh
+chmod 700 /home/ec2-user/.ssh
+chmod 600 /home/ec2-user/.ssh/authorized_keys

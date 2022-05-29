@@ -1,0 +1,4 @@
+- name: Stop Liferay
+  systemd:
+    state: stopped 
+    name: liferay-portal

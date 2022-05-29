@@ -1,0 +1,52 @@
+- name: Copy Liferay properties from backup
+  copy:
+    src: backups/lr/properties.tar.gz
+    dest: /opt/liferay/properties.tar.gz
+
+- name: Copy Liferay license from backup
+  copy:
+    src: backups/lr/license.tar.gz
+    dest: /opt/liferay/license.tar.gz
+
+- name: Copy Liferay OSGi library from backup
+  copy:
+    src: backups/lr/osgi.tar.gz
+    dest: /opt/liferay/osgi.tar.gz
+
+- name: Copy Liferay data from backup
+  copy:
+    src: backups/lr/data.tar.gz
+    dest: /opt/liferay/data.tar.gz
+
+- name: Restore properties
+  ansible.builtin.unarchive:
+    src: /opt/liferay/properties.tar.gz
+    dest: /opt/liferay
+    remote_src: yes
+    extra_opts:
+    - --same-owner
+
+- name: Restore license
+  ansible.builtin.unarchive:
+    src: /opt/liferay/license.tar.gz
+    dest: /opt/liferay
+    remote_src: yes
+    extra_opts:
+    - --same-owner
+
+- name: Restore OSGi
+  ansible.builtin.unarchive:
+    src: /opt/liferay/osgi.tar.gz
+    dest: /opt/liferay
+    remote_src: yes
+    extra_opts:
+    - --same-owner
+
+- name: Restore data
+  ansible.builtin.unarchive:
+    src: /opt/liferay/data.tar.gz
+    dest: /opt/liferay
+    remote_src: yes
+    extra_opts:
+    - --same-owner
+

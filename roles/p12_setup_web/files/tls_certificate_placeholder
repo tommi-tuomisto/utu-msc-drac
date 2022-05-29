@@ -1,0 +1,8 @@
+This folder should include the TLS certificates and private keys
+specific to your TLD. By default, this Ansible role expects to find
+the following files here:
+
+ * any.liferayapp.xyz-cert.pem
+ * any.liferayapp.xyz-chain.pem
+ * any.liferayapp.xyz-fullchain.pem
+ * any.liferayapp.xyz-privkey.pem

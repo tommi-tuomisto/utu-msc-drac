@@ -1,0 +1,32 @@
+- name: Set domain name fact
+  set_fact:
+    fqdn: "{{ hostvars['localhost'].fqdn }}"
+
+- name: Copy OSGi Elasticsearch connector configuration
+  copy:
+    src: osgi-es.config 
+    dest: /opt/liferay/liferay-ce-portal-7.4.2-ga3/osgi/configs/com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration.config
+    owner: liferay
+    group: root
+    mode: 0644
+
+- name: Copy portal setup properties
+  template:
+    src: portal-setup-wizard.properties.j2
+    dest: /opt/liferay/liferay-ce-portal-7.4.2-ga3/portal-setup-wizard.properties
+    owner: liferay
+    group: liferay
+    mode: 0640
+
+- name: Copy application server configuration
+  template:
+    src: server.xml.j2
+    dest: /opt/liferay/liferay-ce-portal-7.4.2-ga3/tomcat-9.0.43/conf/server.xml
+    owner: liferay
+    group: root
+    mode: 0644
+
+- name: Restart Liferay
+  systemd:
+    name: liferay-portal
+    state: restarted

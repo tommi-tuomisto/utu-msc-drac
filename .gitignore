@@ -1,0 +1,11 @@
+terraform/.terraform
+terraform/.terraform.lock.hcl
+terraform/*.tfstate
+terraform/tfvars*
+terraform/terraform.tfstate.d/primary/*.tfstate*
+terraform/terraform.tfstate.d/fallback/*.tfstate*
+terraform/terraform.tfstate.d/test/*.tfstate*
+software/liferay-ce-portal-tomcat-*
+roles/p12_setup_web/files/*.pem
+backups/db/*sql
+backups/lr/*gz

@@ -1,0 +1,15 @@
+[Unit]
+Description=Liferay Portal Tomcat
+After=network.target
+
+[Service]
+Type=forking
+User=liferay
+Group=liferay
+ExecStart=/opt/liferay/liferay-ce-portal-7.4.2-ga3/tomcat-9.0.43/bin/startup.sh
+ExecStop=/opt/liferay/liferay-ce-portal-7.4.2-ga3/tomcat-9.0.43/bin/shutdown.sh
+TimeoutStartSec=600
+TimeoutStopSec=200
+
+[Install]
+WantedBy=multi-user.target
